@@ -1,8 +1,0 @@
-node_modules
-out
-*.vsix
-.vscode-test/
-.npmrc
-mplusdoc/
-.gitignore
-.vscodeignore
