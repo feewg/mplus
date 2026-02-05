@@ -1,112 +1,187 @@
 {
+  "name": "Mplus",
   "scopeName": "source.mplus",
+  "fileTypes": ["inp", "out"],
   "patterns": [
     {
-      "include": "#comments"
-    },
-    {
-      "include": "#command-blocks"
-    },
-    {
-      "include": "#model-keywords"
-    },
-    {
-      "include": "#submodel-markers"
-    },
-    {
-      "include": "#symbols"
-    }
-  ],
-  "repository": {
-    "comments": {
+      "comment": "Comments",
       "name": "comment.line.exclamation.mplus",
-      "match": "(!).*$",
+      "match": "!.*$"
+    },
+    {
+      "comment": "Section headers",
+      "name": "keyword.control.section.mplus",
+      "match": "(?i)\\b(TITLE|DATA|VARIABLE|DEFINE|ANALYSIS|MODEL|OUTPUT|PLOT|SAVEDATA|MONTECARLO)\\s*:",
       "captures": {
-        "1": {
-          "name": "punctuation.definition.comment.mplus"
-        }
+        "1": {"name": "keyword.control.mplus"}
       }
     },
-    "command-blocks": {
+    {
+      "comment": "Model subsections",
+      "name": "keyword.control.subsection.mplus",
+      "match": "(?i)\\b(MODEL\\s+INDIRECT|MODEL\\s+CONSTRAINT|MODEL\\s+PRIORS|MODEL\\s+MISSING|MODEL\\s+POPULATION|MODEL\\s+COVERAGE|MODEL\\s+TEST|MODEL\\s+\\w+)\\s*:",
+      "captures": {
+        "1": {"name": "keyword.control.mplus"}
+      }
+    },
+    {
+      "comment": "Class labels like %OVERALL% or %c1#1%",
+      "name": "entity.name.class.mplus",
+      "match": "(?i)%[\\w#]+%"
+    },
+    {
+      "comment": "DATA keywords",
+      "name": "keyword.other.data.mplus",
+      "match": "(?i)\\b(FILE|FORMAT|TYPE|NOBSERVATIONS|NGROUPS|LISTWISE|SWMATRIX|SIGDATA|COHORT|RESPONSE|RECORD|LRECL|NREC|MONTECARLO|REPLICATION|REPFILE|SAVEDATA|IMPUTE|NDATASETS|SAVE|MODEL|VALUES|ROUNDING|THIN|WIDE|LONG|IDVARIABLE|REPETITION|NAMES|CUTPOINT|BINARY|CONTINUOUS|TRANSFORM|DESCRIPTIVE|COPATTERN|COHRECODE|TIMEMEASURES|TNAMES)\\b"
+    },
+    {
+      "comment": "VARIABLE keywords",
+      "name": "keyword.other.variable.mplus",
+      "match": "(?i)\\b(NAMES|USEVARIABLES|USEOBSERVATIONS|MISSING|CATEGORICAL|NOMINAL|COUNT|CENSORED|CLASSES|KNOWNCLASS|TRAINING|AUXILIARY|CONSTRAINT|PATTERN|WITHIN|BETWEEN|CLUSTER|WEIGHT|STRATIFICATION|GROUPING|IDVARIABLE|FREQWEIGHT|TSCORES|LAGGED|SURVIVAL|TIMECENSORED|DSURVIVAL|BWEIGHT|B2WEIGHT|B3WEIGHT|BSTRATIFICATION|B2STRATIFICATION|B3STRATIFICATION|DEFINE|SUBPOPULATION|FINITE|CENSORED)\\b"
+    },
+    {
+      "comment": "ANALYSIS keywords",
+      "name": "keyword.other.analysis.mplus",
+      "match": "(?i)\\b(TYPE|ESTIMATOR|ALGORITHM|INTEGRATION|DISTRIBUTION|LINK|MODEL|ITERATIONS|CONVERGENCE|COVERAGE|LOGCRITERION|RLOGCRITERION|MLOGCRITERION|MCONVERGENCE|LOGFILE|PROCESSORS|STARTS|STITERATIONS|STCONVERGENCE|STSCALE|STSEED|OPTSEED|K\\-1STARTS|H1ITERATIONS|H1CONVERGENCE|MITERATIONS|MCONVERGENCE|MCITERATIONS|MUITERATIONS|MUCONVERGENCE|RITERATIONS|FBITERATIONS|THIN|POINT|CHAINS|BSEED|BCONVERGENCE|BITERATIONS|STVALUES|BSTARTS|ODLL|MDITERATIONS|ADAPTIVE|ESTIMATOR|BOOTSTRAP|REPSE|BASEHAZARD|CHOLESKY|PARAMETERIZATION|ROTATION|ROWSTANDARDIZATION|PARALLEL|DIFFTEST|ALIGNMENT|TOLERANCE|METRIC|SCALAR|CONFIGURAL)\\b"
+    },
+    {
+      "comment": "TYPE values",
+      "name": "support.constant.type.mplus",
+      "match": "(?i)\\b(GENERAL|BASIC|RANDOM|COMPLEX|TWOLEVEL|THREELEVEL|CROSSCLASSIFIED|MIXTURE|EFA|ESEM|BSEM|COMBINATION|IMPUTATION|MISSING|OBSERVED|COVARIANCE|CORRELATION|MEANS|FULLCOV|INDIVIDUAL|FULLCORR|STDEVIATIONS|UW|UB)\\b"
+    },
+    {
+      "comment": "ESTIMATOR values",
+      "name": "support.constant.estimator.mplus",
+      "match": "(?i)\\b(ML|MLM|MLMV|MLR|MLF|MUML|WLS|WLSM|WLSMV|ULS|ULSMV|GLS|BAYES|PML|EM|FS|ODLL|GIBBS|MH|STANDARD|GAUSSHERMITE|MONTECARLO)\\b"
+    },
+    {
+      "comment": "OUTPUT keywords",
+      "name": "keyword.other.output.mplus",
+      "match": "(?i)\\b(SAMPSTAT|RESIDUAL|STANDARDIZED|STDYX|STDY|STD|CINTERVAL|PATTERNS|FSCOMPARISON|FSDETERMINACY|MODINDICES|SVALUES|CINT|H1SE|H1TECH3|BASEHAZARD|LOGLIKELIHOOD|TECH1|TECH2|TECH3|TECH4|TECH5|TECH6|TECH7|TECH8|TECH9|TECH10|TECH11|TECH12|TECH13|TECH14|TECH15|TECH16|FSCOEFFICIENT|SVALUES|ENTROPY|CROSSTABS|RESULTS|ESTIMATES)\\b"
+    },
+    {
+      "comment": "PLOT keywords",
+      "name": "keyword.other.plot.mplus",
+      "match": "(?i)\\b(PLOT1|PLOT2|PLOT3|TYPE|SERIES|FACTORS|LOOP|ESTIMATED|SAMPLE|OUTLIERS|SENSITIVITY)\\b"
+    },
+    {
+      "comment": "SAVEDATA keywords",
+      "name": "keyword.other.savedata.mplus",
+      "match": "(?i)\\b(FILE|SAVE|FORMAT|ESTIMATES|RESULTS|TECH3|TECH4|RECORD|FSCORES|DIFFTEST|RANKING|SAMPLE|BPARAMETERS|MISSFLAG|CPROBABILITIES)\\b"
+    },
+    {
+      "comment": "MONTECARLO keywords",
+      "name": "keyword.other.montecarlo.mplus",
+      "match": "(?i)\\b(NAMES|NOBSERVATIONS|NGROUPS|NREPS|SEED|GENERATE|CATEGORICAL|COUNT|NOMINAL|PATMISS|PATPROBS|CUTPOINTS|MISSING|NCSIZES|CSIZES|GENCLASSES|CLASSES|POPULATION|COVERAGE|RESULTS|REPSAVE|SAVE|ANALYSIS|MODEL|CHECK|NOCHECK|ON|OFF|SEQUENTIAL|REGRESSION|LOG|SDROPOUT|DDROPOUT|GRANDMEAN|GROUPMEAN)\\b"
+    },
+    {
+      "comment": "Common keywords",
+      "name": "keyword.other.mplus",
+      "match": "(?i)\\b(IS|ARE|CENTER|STANDARDIZE|GRANDMEAN|GROUPMEAN|FREE|FIXED|VARY|VALUE|LABEL|IF|THEN|ELSE|CUT|CLUSTER_MEAN|DO)\\b"
+    },
+    {
+      "comment": "Model operators",
+      "name": "entity.name.function.operator.mplus",
+      "match": "(?i)\\b(BY|ON|WITH|PWITH|IND|VIA|MOD|XWITH|PON|INF|AT|NEW|DIF|MULTILEVEL|LOOP|DO|CONSTRAINT|PRIOR)\\b"
+    },
+    {
+      "comment": "Factor loading shortcuts",
+      "name": "entity.name.function.loading.mplus",
+      "match": "(?i)\\b(LOADING|LOADINGS|INTERCEPT|INTERCEPTS|SCALE|SCALES|RESIDUAL|THRESHOLD|THRESHOLDS)\\b"
+    },
+    {
+      "comment": "Growth model operator",
+      "name": "entity.name.function.operator.mplus",
+      "match": "\\|"
+    },
+    {
+      "comment": "Logical operators",
+      "name": "support.type.logical.mplus",
+      "match": "(?i)\\b(IF|THEN|AND|OR|NOT|EQ|NE|GT|GE|LT|LE)\\b"
+    },
+    {
+      "comment": "Mathematical functions",
+      "name": "support.function.math.mplus",
+      "match": "(?i)\\b(ABS|EXP|LOG|LOG10|SQRT|SIN|COS|TAN|ASIN|ACOS|ATAN|SINH|COSH|TANH|FLOOR|CEILING|ROUND|TRUNC|MOD)\\b"
+    },
+    {
+      "comment": "Statistical functions",
+      "name": "support.function.stat.mplus",
+      "match": "(?i)\\b(MAX|MIN|SUM|MEAN|VARIANCE|SD|MEDIAN|MODE|GRANDMEAN|GROUPMEAN|CLUSTER_MEAN|STDEV)\\b"
+    },
+    {
+      "comment": "Distribution functions",
+      "name": "support.function.dist.mplus",
+      "match": "(?i)\\b(NORMAL|LOGNORMAL|UNIFORM|EXPONENTIAL|GAMMA|BETA|CHISQUARE|BINOMIAL|POISSON|NEGBIN|PROBIT|LOGIT|CLOGLOG)\\b"
+    },
+    {
+      "comment": "Special model functions",
+      "name": "support.function.model.mplus",
+      "match": "(?i)\\b(LAGRANGE|WALD|SCORE|LRT)\\b"
+    },
+    {
+      "comment": "Numbers",
+      "name": "constant.numeric.mplus",
+      "match": "\\b-?[0-9]+(\\.[0-9]+)?([eE][+-]?[0-9]+)?\\b"
+    },
+    {
+      "comment": "Constraint symbols",
+      "name": "keyword.operator.constraint.mplus",
+      "match": "@|\\*|\\(|\\)|\\[|\\]|\\{|\\}"
+    },
+    {
+      "comment": "String literals",
+      "name": "string.quoted.double.mplus",
+      "begin": "\"",
+      "end": "\"",
       "patterns": [
         {
-          "name": "keyword.control.mplus",
-          "match": "(?i)\\b(TITLE|DATA|DATA\\s+IMPUTATION|DATA\\s+WIDETOLONG|DATA\\s+LONGTOWIDE|DATA\\s+TWOPART|DATA\\s+MISSING|DATA\\s+SURVIVAL|DATA\\s+COHORT|VARIABLE|DEFINE|ANALYSIS|MODEL|MODEL\\s+INDIRECT|MODEL\\s+CONSTRAINT|MODEL\\s+TEST|MODEL\\s+PRIORS|MODEL\\s+POPULATION|MODEL\\s+COVERAGE|MODEL\\s+MISSING|OUTPUT|SAVEDATA|PLOT|MONTECARLO)\\s*:",
-          "captures": {
-            "1": {
-              "name": "entity.name.function.mplus"
-            }
-          }
-        },
-        {
-          "name": "keyword.other.mplus",
-          "match": "(?i)\\b(FILE|FORMAT|TYPE|NOBSERVATIONS|NGROUPS|LISTWISE|SWMATRIX|VARIANCES|IMPUTE|NDATASETS|SAVE|MODEL|VALUES|ROUNDING|THIN|WIDE|LONG|IDVARIABLE|REPETITION|NAMES|CUTPOINT|BINARY|CONTINUOUS|TRANSFORM|DESCRIPTIVE|COHORT|COPATTERN|COHRECODE|TIMEMEASURES|TNAMES|USEOBSERVATIONS|USEVARIABLES|MISSING|CENSORED|CATEGORICAL|NOMINAL|COUNT|DSURVIVAL|GROUPING|FREQWEIGHT|STRATIFICATION|CLUSTER|WEIGHT|WITHIN|BETWEEN|CLASSES|KNOWNCLASS|CENTER|STANDARDIZE|IF|THEN|ELSE|ESTIMATOR|ALGORITHM|INTEGRATION|ADAPTIVE|ITERATIONS|CONVERGENCE|STARTS|STITERATIONS|STSEED|BOOTSTRAP|LRTBOOTSTRAP|SAMPSTAT|CROSSTABS|STANDARDIZED|STDYX|STDY|RESIDUAL|MODINDICES|CINTERVAL|ALIGNMENT|ENTROPY|RESULTS|ESTIMATES|SERIES|FACTORS|OUTLIERS|NREPS|SEED|GENERATE|CUTPOINTS|GENCLASSES)\\b"
-        },
-        {
-          "name": "keyword.other.mplus",
-          "match": "(?i)\\b(TECH1[0-6])\\b"
-        },
-        {
-          "name": "keyword.other.mplus",
-          "match": "(?i)\\b(INDIVIDUAL|COVARIANCE|CORRELATION|FULLCOV|FULLCORR|MEANS|STDEVIATIONS|MONTECARLO|IMPUTATION|CHECK|NOCHECK|ON|OFF|SEQUENTIAL|REGRESSION|LOG|MISSING|SDROPOUT|DDROPOUT|GENERAL|BASIC|RANDOM|COMPLEX|MIXTURE|TWOLEVEL|THREELEVEL|CROSSCLASSIFIED|EFA|UW|UB|ML|MLR|WLS|BAYES|EM|FS|ODLL|GIBBS|MH|STANDARD|GAUSSHERMITE|MONTECARLO|PLOT1|PLOT2|PLOT3|SENSITIVITY|FSCORES|CPROBABILITIES|GRANDMEAN|GROUPMEAN)\\b"
-        },
-        {
-          "name": "keyword.function.mplus",
-          "match": "(?i)\\b(MEAN|SUM|CUT|CLUSTER_MEAN|DO)\\b"
-        },
-        {
-          "name": "constant.language.mplus",
-          "match": "(?i)\\b_MISSING\\b"
+          "name": "constant.character.escape.mplus",
+          "match": "\\\\."
         }
       ]
     },
-    "model-keywords": {
+    {
+      "comment": "String literals single quote",
+      "name": "string.quoted.single.mplus",
+      "begin": "'",
+      "end": "'",
       "patterns": [
         {
-          "name": "keyword.operator.relationship.mplus",
-          "match": "(?i)\\b(ON|BY|WITH|PWITH|PON|XWITH|AT)\\b"
+          "name": "constant.character.escape.mplus",
+          "match": "\\\\."
         }
       ]
     },
-    "submodel-markers": {
-      "patterns": [
-        {
-          "name": "entity.name.tag.mplus",
-          "match": "(?i)%(WITHIN|BETWEEN|OVERALL|\\w+)%"
-        },
-        {
-          "name": "entity.name.tag.mplus",
-          "match": "(?i)\\bMODEL\\s+\\w+\\s*:"
-        }
-      ]
+    {
+      "comment": "Variable ranges",
+      "name": "variable.other.range.mplus",
+      "match": "\\b[a-zA-Z_][a-zA-Z0-9_]*-[a-zA-Z_][a-zA-Z0-9_]*\\b"
     },
-    "symbols": {
-      "patterns": [
-        {
-          "name": "keyword.operator.symbol.mplus",
-          "match": "(@|\\*|\\||%)"
-        },
-        {
-          "name": "punctuation.brackets.mplus",
-          "match": "(\\[|\\])"
-        },
-        {
-          "name": "punctuation.braces.mplus",
-          "match": "(\\{|\\})"
-        },
-        {
-          "name": "punctuation.parentheses.mplus",
-          "match": "(\\(|\\))"
-        },
-        {
-          "name": "punctuation.terminator.mplus",
-          "match": ";"
-        },
-        {
-          "name": "keyword.operator.comparison.mplus",
-          "match": "(=|>|<|>=|<=|==|!=)"
-        }
-      ]
+    {
+      "comment": "Special values and constants",
+      "name": "constant.language.mplus",
+      "match": "(?i)\\b(ALL|NONE|DEFAULT|SIMPLE|VARIANCE|COVARIANCE|CORRELATION|ON|OFF|YES|NO|TRUE|FALSE|_MISSING)\\b"
+    },
+    {
+      "comment": "Rotation methods",
+      "name": "constant.language.rotation.mplus",
+      "match": "(?i)\\b(GEOMIN|QUARTIMIN|OBLIMIN|PROMAX|VARIMAX|EQUAMAX|PARSIMAX|TARGET|BIFACTOR|BI\\-GEOMIN)\\b"
+    },
+    {
+      "comment": "Label constraints",
+      "name": "variable.parameter.constraint.mplus",
+      "match": "\\([a-zA-Z][a-zA-Z0-9_]*\\)"
+    },
+    {
+      "comment": "Comparison operators",
+      "name": "keyword.operator.comparison.mplus",
+      "match": "(=|>|<|>=|<=|==|!=|>|<)"
+    },
+    {
+      "comment": "Terminator",
+      "name": "punctuation.terminator.mplus",
+      "match": ";"
     }
-  }
+  ]
 }

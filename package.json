@@ -18,7 +18,7 @@
       {
         "id": "mplus",
         "aliases": ["Mplus", "mplus"],
-        "extensions": [".inp"],
+        "extensions": [".inp", ".out"],
         "configuration": "./language-configuration.json"
       }
     ],
