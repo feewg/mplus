@@ -46,14 +46,21 @@
 
 ## 安装
 
-### 从 VS Code Marketplace 安装
+### 从 GitHub Release 安装
 
-1. 打开 VS Code
-2. 按 `Ctrl+Shift+X` 打开扩展面板
-3. 搜索 "Mplus"
-4. 点击 "Install" 安装
+由于本扩展未发布到 VS Code Marketplace，需要通过 GitHub Release 安装：
+
+1. 访问本项目的 [GitHub Releases](https://github.com/feewg/mplus/releases) 页面
+2. 下载最新版本的 `.vsix` 文件
+3. 打开 VS Code
+4. 按 `Ctrl+Shift+P` 打开命令面板
+5. 输入 "Install from VSIX"
+6. 选择下载的 `.vsix` 文件
+7. 重启 VS Code
 
 ### 从源码安装
+
+如果您想从源码安装最新版本：
 
 1. 克隆本仓库：
    ```bash
@@ -69,12 +76,12 @@
    ```
 4. 打包扩展：
    ```bash
-   npm run vscode:prepublish
+   npm run package
    ```
 5. 在 VS Code 中安装：
    - 按 `Ctrl+Shift+P` 打开命令面板
    - 输入 "Install from VSIX"
-   - 选择打包好的 `.vsix` 文件
+   - 选择项目根目录下的 `.vsix` 文件
 
 ## 使用方法
 
@@ -149,6 +156,36 @@ npm run compile
 npm run watch
 ```
 
+### 打包
+
+```bash
+npm run package
+```
+
+这将生成一个 `.vsix` 文件，可以用于分发或安装。
+
+## 发布新版本
+
+要发布新版本到 GitHub Release：
+
+1. 更新 `package.json` 中的版本号
+2. 提交更改：
+   ```bash
+   git add .
+   git commit -m "Bump version to x.x.x"
+   git push
+   ```
+3. 打包扩展：
+   ```bash
+   npm run package
+   ```
+4. 在 GitHub 上创建新的 Release：
+   - 访问项目的 Releases 页面
+   - 点击 "Draft a new release"
+   - 输入版本标签（如 v0.0.2）
+   - 上传生成的 `.vsix` 文件
+   - 发布 Release
+
 ## 贡献
 
 欢迎贡献！请遵循以下步骤：
@@ -182,6 +219,7 @@ npm run watch
 - 添加了逻辑运算符高亮
 - 添加了变量范围、字符串字面量、常量高亮
 - 所有关键词支持大小写不敏感匹配
+- 添加了 GitHub Release 发布说明
 
 ### v0.0.1 (2026-02-05)
 - 初始版本发布
