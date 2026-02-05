@@ -164,28 +164,6 @@ npm run package
 
 这将生成一个 `.vsix` 文件，可以用于分发或安装。
 
-## 发布新版本
-
-要发布新版本到 GitHub Release：
-
-1. 更新 `package.json` 中的版本号
-2. 提交更改：
-   ```bash
-   git add .
-   git commit -m "Bump version to x.x.x"
-   git push
-   ```
-3. 打包扩展：
-   ```bash
-   npm run package
-   ```
-4. 在 GitHub 上创建新的 Release：
-   - 访问项目的 Releases 页面
-   - 点击 "Draft a new release"
-   - 输入版本标签（如 v0.0.2）
-   - 上传生成的 `.vsix` 文件
-   - 发布 Release
-
 ## 贡献
 
 欢迎贡献！请遵循以下步骤：
