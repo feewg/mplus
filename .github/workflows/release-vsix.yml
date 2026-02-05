@@ -1,0 +1,49 @@
+name: Build & Release VSIX
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+permissions:
+  contents: write  # 关键：允许创建/更新 release 并上传附件
+
+jobs:
+  build-release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install deps
+        run: npm ci
+
+      # 如果你的扩展需要编译（TS 常见），有脚本就执行，没有就跳过
+      - name: Build (if present)
+        run: |
+          npm run build --if-present
+          npm run compile --if-present
+
+      - name: Install vsce
+        run: npm i -g @vscode/vsce
+
+      - name: Package VSIX
+        run: |
+          vsce package --no-dependencies
+          ls -lah *.vsix
+
+      # 创建/更新 GitHub Release，并上传 .vsix
+      - name: Publish GitHub Release (attach .vsix)
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: "*.vsix"
+          generate_release_notes: true
