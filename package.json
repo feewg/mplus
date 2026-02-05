@@ -14,12 +14,41 @@
   ],
   "main": "./out/extension.js",
   "contributes": {
+    "languages": [
+      {
+        "id": "mplus",
+        "aliases": ["Mplus", "mplus"],
+        "extensions": [".inp"],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "mplus",
+        "scopeName": "source.mplus",
+        "path": "./syntaxes/mplus.tmLanguage.json"
+      }
+    ],
     "commands": [
       {
         "command": "mplus.helloWorld",
         "title": "Hello World"
+      },
+      {
+        "command": "mplus.run",
+        "title": "Run Mplus",
+        "icon": "$(play)"
       }
-    ]
+    ],
+    "menus": {
+      "editor/title": [
+        {
+          "command": "mplus.run",
+          "when": "resourceLangId == mplus",
+          "group": "navigation"
+        }
+      ]
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
