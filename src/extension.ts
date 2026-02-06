@@ -1,75 +1,118 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
+/**
+ * Mplus VS Code Extension
+ * 主入口文件
+ */
+
 import * as vscode from 'vscode';
-import * as path from 'path';
-import * as os from 'os';
+import { MplusConfig } from './types';
+import { TerminalManager } from './services/terminalManager';
+import { MplusExecutor } from './services/mplusExecutor';
+import { StatusBarManager } from './services/statusBarManager';
+import { DiagnosticsService } from './services/diagnostics';
+import { registerRunMplusCommand } from './commands/runMplus';
+import { registerStopMplusCommand } from './commands/stopMplus';
+import { registerOpenOutputCommand } from './commands/openOutput';
+import { registerClearTerminalCommand } from './commands/clearTerminal';
+import { registerNewFileCommand } from './commands/newFile';
 
-// This method is called when your extension is activated
-// Your extension is activated the very first time the command is executed
+// 全局变量
+let terminalManager: TerminalManager;
+let mplusExecutor: MplusExecutor;
+let statusBarManager: StatusBarManager;
+let diagnosticsService: DiagnosticsService;
+
+/**
+ * 扩展激活时调用
+ */
 export function activate(context: vscode.ExtensionContext) {
+  console.log('Mplus 扩展已激活！');
 
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "mplus" is now active!');
+  // 获取默认配置
+  const defaultConfig: MplusConfig = {
+    executablePath: 'mplus',
+    autoOpenOutput: true,
+    clearTerminal: true,
+    saveBeforeRun: true
+  };
 
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
-	const helloWorldCommand = vscode.commands.registerCommand('mplus.helloWorld', () => {
-		// The code you place here will be executed every time your command is executed
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from MPlus Extension!');
-	});
+  // 初始化服务
+  terminalManager = new TerminalManager();
+  mplusExecutor = new MplusExecutor(terminalManager, defaultConfig);
+  statusBarManager = new StatusBarManager();
+  diagnosticsService = new DiagnosticsService();
 
-	// Register the run mplus command
-	const runMplusCommand = vscode.commands.registerCommand('mplus.run', () => {
-		// Get the active text editor
-		const activeEditor = vscode.window.activeTextEditor;
-		
-		if (!activeEditor) {
-			vscode.window.showErrorMessage('No active editor found');
-			return;
-		}
+  // 注册命令
+  const helloWorldCommand = vscode.commands.registerCommand('mplus.helloWorld', () => {
+    vscode.window.showInformationMessage('Hello World from MPlus Extension!');
+  });
 
-		// Get the file path
-		const filePath = activeEditor.document.uri.fsPath;
-		
-		// Check if the file is an .inp file
-		if (!filePath.endsWith('.inp')) {
-			vscode.window.showErrorMessage('Please run this command on a .inp file');
-			return;
-		}
+  const runMplusCommand = registerRunMplusCommand(mplusExecutor, statusBarManager);
+  const stopMplusCommand = registerStopMplusCommand(mplusExecutor, statusBarManager);
+  const openOutputCommand = registerOpenOutputCommand();
+  const clearTerminalCommand = registerClearTerminalCommand(terminalManager);
+  const newFileCommand = registerNewFileCommand();
 
-		// Get the directory of the file
-		const fileDir = path.dirname(filePath);
-		const fileName = path.basename(filePath);
+  // 注册到上下文
+  context.subscriptions.push(helloWorldCommand);
+  context.subscriptions.push(runMplusCommand);
+  context.subscriptions.push(stopMplusCommand);
+  context.subscriptions.push(openOutputCommand);
+  context.subscriptions.push(clearTerminalCommand);
+  context.subscriptions.push(newFileCommand);
+  context.subscriptions.push(terminalManager);
+  context.subscriptions.push(statusBarManager);
+  context.subscriptions.push(diagnosticsService);
 
-		// Get the platform to determine the correct shell command
-		const platform = os.platform();
-		let command: string;
+  // 监听文档变化
+  const documentChangeListener = vscode.workspace.onDidChangeTextDocument((event) => {
+    if (event.document.languageId === 'mplus') {
+      diagnosticsService.validateDocument(event.document);
+    }
+  });
 
-		if (platform === 'win32') {
-			// Windows: use PowerShell-compatible command
-			// PowerShell uses Set-Location or cd, and doesn't need /d
-			command = `Set-Location "${fileDir}"; mplus "${fileName}"`;
-		} else {
-			// Unix-like systems (Linux, macOS)
-			command = `cd "${fileDir}" && mplus "${fileName}"`;
-		}
+  // 监听文档打开
+  const documentOpenListener = vscode.workspace.onDidOpenTextDocument((document) => {
+    if (document.languageId === 'mplus') {
+      diagnosticsService.validateDocument(document);
+    }
+  });
 
-		// Create a new terminal
-		const terminal = vscode.window.createTerminal('Mplus');
-		
-		// Send the command to the terminal
-		terminal.sendText(command);
-		
-		// Show the terminal
-		terminal.show();
-	});
+  // 监听文档保存
+  const documentSaveListener = vscode.workspace.onDidSaveTextDocument((document) => {
+    if (document.languageId === 'mplus') {
+      diagnosticsService.validateDocument(document);
+    }
+  });
 
-	context.subscriptions.push(helloWorldCommand);
-	context.subscriptions.push(runMplusCommand);
+  context.subscriptions.push(documentChangeListener);
+  context.subscriptions.push(documentOpenListener);
+  context.subscriptions.push(documentSaveListener);
+
+  // 验证当前打开的 Mplus 文件
+  vscode.workspace.textDocuments.forEach((document) => {
+    if (document.languageId === 'mplus') {
+      diagnosticsService.validateDocument(document);
+    }
+  });
+
+  console.log('Mplus 扩展所有功能已注册完成！');
 }
 
-// This method is called when your extension is deactivated
-export function deactivate() {}
+/**
+ * 扩展停用时调用
+ */
+export function deactivate() {
+  console.log('Mplus 扩展已停用');
+  
+  if (terminalManager) {
+    terminalManager.dispose();
+  }
+  
+  if (statusBarManager) {
+    statusBarManager.dispose();
+  }
+  
+  if (diagnosticsService) {
+    diagnosticsService.dispose();
+  }
+}

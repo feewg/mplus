@@ -1,21 +1,36 @@
 {
   "name": "mplus",
   "displayName": "MPlus Extension",
-  "description": "A VSCode extension for Mplus statistical software with syntax highlighting and execution",
-  "version": "0.0.1",
+  "description": "A VSCode extension for Mplus statistical software with syntax highlighting, execution, and advanced features",
+  "version": "0.1.0",
   "license": "MIT-NC",
+  "publisher": "feewg",
   "repository": {
     "type": "git",
     "url": "https://github.com/feewg/mplus.git"
   },
+  "bugs": {
+    "url": "https://github.com/feewg/mplus/issues"
+  },
+  "homepage": "https://github.com/feewg/mplus#readme",
   "engines": {
     "vscode": "^1.96.0"
   },
   "categories": [
+    "Programming Languages",
+    "Snippets",
     "Other"
   ],
+  "keywords": [
+    "mplus",
+    "statistics",
+    "structural equation modeling",
+    "sem",
+    "syntax highlighting"
+  ],
   "activationEvents": [
-    "onStartupFinished"
+    "onStartupFinished",
+    "onLanguage:mplus"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -34,6 +49,31 @@
         "path": "./syntaxes/mplus.tmLanguage.json"
       }
     ],
+    "configuration": {
+      "title": "Mplus",
+      "properties": {
+        "mplus.executablePath": {
+          "type": "string",
+          "default": "mplus",
+          "description": "Mplus 可执行文件的路径"
+        },
+        "mplus.autoOpenOutput": {
+          "type": "boolean",
+          "default": true,
+          "description": "执行完成后自动打开 .out 文件"
+        },
+        "mplus.clearTerminal": {
+          "type": "boolean",
+          "default": true,
+          "description": "执行前清除终端"
+        },
+        "mplus.saveBeforeRun": {
+          "type": "boolean",
+          "default": true,
+          "description": "执行前自动保存文件"
+        }
+      }
+    },
     "commands": [
       {
         "command": "mplus.helloWorld",
@@ -43,6 +83,26 @@
         "command": "mplus.run",
         "title": "Run Mplus",
         "icon": "$(play)"
+      },
+      {
+        "command": "mplus.stop",
+        "title": "Stop Mplus",
+        "icon": "$(debug-stop)"
+      },
+      {
+        "command": "mplus.openOutput",
+        "title": "Open Output File",
+        "icon": "$(file-code)"
+      },
+      {
+        "command": "mplus.clearTerminal",
+        "title": "Clear Terminal",
+        "icon": "$(trash)"
+      },
+      {
+        "command": "mplus.newFile",
+        "title": "New Mplus File",
+        "icon": "$(new-file)"
       }
     ],
     "menus": {
@@ -51,9 +111,62 @@
           "command": "mplus.run",
           "when": "resourceLangId == mplus",
           "group": "navigation"
+        },
+        {
+          "command": "mplus.stop",
+          "when": "resourceLangId == mplus",
+          "group": "navigation"
+        },
+        {
+          "command": "mplus.openOutput",
+          "when": "resourceLangId == mplus",
+          "group": "navigation"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "mplus.run",
+          "when": "resourceLangId == mplus"
+        },
+        {
+          "command": "mplus.stop",
+          "when": "resourceLangId == mplus"
+        },
+        {
+          "command": "mplus.openOutput",
+          "when": "resourceLangId == mplus"
         }
       ]
-    }
+    },
+    "keybindings": [
+      {
+        "command": "mplus.run",
+        "key": "f5",
+        "when": "resourceLangId == mplus"
+      },
+      {
+        "command": "mplus.openOutput",
+        "key": "ctrl+shift+o",
+        "mac": "cmd+shift+o",
+        "when": "resourceLangId == mplus"
+      },
+      {
+        "command": "mplus.newFile",
+        "key": "ctrl+alt+n",
+        "mac": "cmd+alt+n"
+      },
+      {
+        "command": "mplus.clearTerminal",
+        "key": "ctrl+shift+k",
+        "mac": "cmd+shift+k"
+      }
+    ],
+    "snippets": [
+      {
+        "language": "mplus",
+        "path": "./snippets/mplus.code-snippets"
+      }
+    ]
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",

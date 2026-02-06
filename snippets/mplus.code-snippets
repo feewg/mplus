@@ -1,0 +1,204 @@
+{
+  "Title Block": {
+    "prefix": "title",
+    "body": [
+      "TITLE: ${1:Your Title Here};"
+    ],
+    "description": "Mplus TITLE block"
+  },
+  "Data Block": {
+    "prefix": "data",
+    "body": [
+      "DATA:",
+      "  FILE = ${1:data.dat};",
+      "  FORMAT = ${2:FREE};",
+      "  TYPE = ${3:CORRELATION};"
+    ],
+    "description": "Mplus DATA block"
+  },
+  "Variable Block": {
+    "prefix": "var",
+    "body": [
+      "VARIABLE:",
+      "  NAMES = ${1:y1-y10};",
+      "  USEVARIABLES = ${2:y1-y10};",
+      "  CATEGORICAL = ${3:};",
+      "  MISSING = ${4:.;};"
+    ],
+    "description": "Mplus VARIABLE block"
+  },
+  "Analysis Block": {
+    "prefix": "analysis",
+    "body": [
+      "ANALYSIS:",
+      "  TYPE = ${1:GENERAL};",
+      "  ESTIMATOR = ${2:ML};",
+      "  ROTATION = ${3:GEOMIN};"
+    ],
+    "description": "Mplus ANALYSIS block"
+  },
+  "Model Block": {
+    "prefix": "model",
+    "body": [
+      "MODEL:",
+      "  ${1:f1} BY ${2:y1-y5};",
+      "  ${3:f2} BY ${4:y6-y10};",
+      "  ${1:f1} WITH ${3:f2};"
+    ],
+    "description": "Mplus MODEL block"
+  },
+  "Output Block": {
+    "prefix": "output",
+    "body": [
+      "OUTPUT:",
+      "  SAMPSTAT",
+      "  STANDARDIZED",
+      "  TECH1",
+      "  TECH4",
+      "  MODINDICES(3.84)"
+    ],
+    "description": "Mplus OUTPUT block"
+  },
+  "Savedata Block": {
+    "prefix": "savedata",
+    "body": [
+      "SAVEDATA:",
+      "  FILE = ${1:results.dat};",
+      "  SAVE = FSCORES;",
+      "  FORMAT = FREE;"
+    ],
+    "description": "Mplus SAVEDATA block"
+  },
+  "Montecarlo Block": {
+    "prefix": "montecarlo",
+    "body": [
+      "MONTECARLO:",
+      "  NAMES = ${1:y1-y10};",
+      "  NOBSERVATIONS = ${2:500};",
+      "  NREPS = ${3:1000};",
+      "  SEED = ${4:12345};"
+    ],
+    "description": "Mplus MONTECARLO block"
+  },
+  "Factor Loading": {
+    "prefix": "by",
+    "body": [
+      "${1:factor} BY ${2:item1-item5};"
+    ],
+    "description": "Factor loading specification"
+  },
+  "Regression": {
+    "prefix": "on",
+    "body": [
+      "${1:y} ON ${2:x};"
+    ],
+    "description": "Regression specification"
+  },
+  "Covariance": {
+    "prefix": "with",
+    "body": [
+      "${1:x1} WITH ${2:x2};"
+    ],
+    "description": "Covariance specification"
+  },
+  "Mean": {
+    "prefix": "mean",
+    "body": [
+      "[${1:x}];"
+    ],
+    "description": "Mean specification"
+  },
+  "Variance": {
+    "prefix": "var",
+    "body": [
+      "${1:x};"
+    ],
+    "description": "Variance specification"
+  },
+  "Model Constraint": {
+    "prefix": "model.constraint",
+    "body": [
+      "MODEL CONSTRAINT:",
+      "  ${1:new(p1) = p2 + p3};"
+    ],
+    "description": "Model constraint specification"
+  },
+  "Model Test": {
+    "prefix": "model.test",
+    "body": [
+      "MODEL TEST:",
+      "  ${1:p1 = p2};"
+    ],
+    "description": "Model test specification"
+  },
+  "Model Indirect": {
+    "prefix": "model.indirect",
+    "body": [
+      "MODEL INDIRECT:",
+      "  ${1:y} IND ${2:x};"
+    ],
+    "description": "Model indirect effect specification"
+  },
+  "Twolevel Model": {
+    "prefix": "twolevel",
+    "body": [
+      "ANALYSIS:",
+      "  TYPE = TWOLEVEL;",
+      "",
+      "MODEL:",
+      "  %WITHIN%",
+      "    ${1:y} ON ${2:x};",
+      "  %BETWEEN%",
+      "    ${1:y};"
+    ],
+    "description": "Twolevel model specification"
+  },
+  "Mixture Model": {
+    "prefix": "mixture",
+    "body": [
+      "VARIABLE:",
+      "  CLASSES = ${1:c}(2);",
+      "",
+      "ANALYSIS:",
+      "  TYPE = MIXTURE;",
+      "",
+      "MODEL:",
+      "  %OVERALL%",
+      "    ${2:y} ON ${3:x};",
+      "  %c#1%",
+      "    [${2:y}];",
+      "  %c#2%",
+      "    [${2:y}];"
+    ],
+    "description": "Mixture model specification"
+  },
+  "Growth Model": {
+    "prefix": "growth",
+    "body": [
+      "MODEL:",
+      "  ${1:i} ${2:s} | ${3:y1}@0 ${4:y2}@1 ${5:y3}@2 ${6:y4}@3;"
+    ],
+    "description": "Growth model specification"
+  },
+  "CFA Model": {
+    "prefix": "cfa",
+    "body": [
+      "MODEL:",
+      "  ${1:f1} BY ${2:y1-y5};",
+      "  ${3:f2} BY ${4:y6-y10};",
+      "  ${5:f3} BY ${6:y11-y15};",
+      "  ${1:f1} WITH ${3:f2} ${5:f3};",
+      "  ${3:f2} WITH ${5:f3};"
+    ],
+    "description": "CFA model specification"
+  },
+  "SEM Model": {
+    "prefix": "sem",
+    "body": [
+      "MODEL:",
+      "  ${1:y} ON ${2:x1} ${3:x2} ${4:x3};",
+      "  ${5:y2} ON ${6:y};"
+    ],
+    "description": "SEM model specification"
+  }
+}
