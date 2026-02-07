@@ -20,17 +20,17 @@ export class DiagnosticsService {
     const text = document.getText();
     const lines = text.split('\n');
 
-    // 检查必需的命令块
-    const requiredBlocks = ['TITLE', 'DATA', 'VARIABLE', 'ANALYSIS'];
+    // 检查必需的命令块（TITLE 非必需）
+    const requiredBlocks = ['DATA', 'VARIABLE', 'ANALYSIS'];
     const foundBlocks: string[] = [];
 
     lines.forEach((line, lineIndex) => {
       const trimmedLine = line.trim();
       
-      // 检查命令块格式
-      const blockMatch = trimmedLine.match(/^([A-Z]+)\s*:/);
+      // 检查命令块格式（兼容大小写）
+      const blockMatch = trimmedLine.match(/^([A-Za-z]+)\s*:/);
       if (blockMatch) {
-        const blockName = blockMatch[1];
+        const blockName = blockMatch[1].toUpperCase();
         foundBlocks.push(blockName);
       }
 
@@ -62,7 +62,7 @@ export class DiagnosticsService {
           if (nextLine === '' || nextLine.startsWith('!')) {
             continue;
           }
-          if (nextLine.match(/^[A-Z]+\s*:/)) {
+          if (nextLine.match(/^[A-Za-z]+\s*:/)) {
             break;
           }
           hasModelContent = true;

@@ -2,7 +2,7 @@
   "name": "mplus",
   "displayName": "MPlus Extension",
   "description": "A VSCode extension for Mplus statistical software with syntax highlighting, execution, and advanced features",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "license": "MIT-NC",
   "publisher": "feewg",
   "repository": {
