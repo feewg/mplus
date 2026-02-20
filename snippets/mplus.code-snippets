@@ -10,40 +10,139 @@
     "prefix": "data",
     "body": [
       "DATA:",
-      "  FILE = ${1:data.dat};",
-      "  FORMAT = ${2:FREE};",
-      "  TYPE = ${3:CORRELATION};"
+      "  FILE IS ${1:data.dat};"
     ],
     "description": "Mplus DATA block"
   },
+  "Data Imputation": {
+    "prefix": "data.imputation",
+    "body": [
+      "DATA IMPUTATION:",
+      "  IMPUTE = ${1:y1-y5};",
+      "  NDATASETS = ${2:20};",
+      "  NAMES = ${3:y1-y5 x1-x3};",
+      "  SAVE = ${4:imputed_data.dat};"
+    ],
+    "description": "Mplus DATA IMPUTATION block"
+  },
   "Variable Block": {
-    "prefix": "var",
+    "prefix": "variable",
     "body": [
       "VARIABLE:",
-      "  NAMES = ${1:y1-y10};",
-      "  USEVARIABLES = ${2:y1-y10};",
-      "  CATEGORICAL = ${3:};",
-      "  MISSING = ${4:.;};"
+      "  NAMES ARE ${1:y1-y10};",
+      "  USEVARIABLES ARE ${2:y1-y10};"
     ],
     "description": "Mplus VARIABLE block"
+  },
+  "Variable with Missing": {
+    "prefix": "variable.missing",
+    "body": [
+      "VARIABLE:",
+      "  NAMES ARE ${1:y1-y10};",
+      "  USEVARIABLES ARE ${2:y1-y10};",
+      "  MISSING ARE ALL (${3:-999});"
+    ],
+    "description": "Mplus VARIABLE block with missing data"
+  },
+  "Variable Categorical": {
+    "prefix": "variable.categorical",
+    "body": [
+      "VARIABLE:",
+      "  NAMES ARE ${1:u1-u10};",
+      "  CATEGORICAL ARE ${2:u1-u10};"
+    ],
+    "description": "Mplus VARIABLE block with categorical variables"
+  },
+  "Variable Mixture": {
+    "prefix": "variable.mixture",
+    "body": [
+      "VARIABLE:",
+      "  NAMES ARE ${1:y1-y5};",
+      "  CLASSES = ${2:c} (${3:3});"
+    ],
+    "description": "Mplus VARIABLE block for mixture models"
+  },
+  "Variable Multilevel": {
+    "prefix": "variable.multilevel",
+    "body": [
+      "VARIABLE:",
+      "  NAMES ARE ${1:y x cluster};",
+      "  USEVARIABLES ARE ${2:y x};",
+      "  CLUSTER IS ${3:cluster};",
+      "  WITHIN ARE ${4:x};"
+    ],
+    "description": "Mplus VARIABLE block for multilevel models"
+  },
+  "Variable Survival": {
+    "prefix": "variable.survival",
+    "body": [
+      "VARIABLE:",
+      "  NAMES ARE ${1:t x};",
+      "  SURVIVAL ARE ${2:t} (ALL);",
+      "  TIMECENSORED ARE ${3:u} (0 = NOT 1 = RIGHT);"
+    ],
+    "description": "Mplus VARIABLE block for survival analysis"
+  },
+  "Define Block": {
+    "prefix": "define",
+    "body": [
+      "DEFINE:",
+      "  ${1:x_cen} = CENTER(${2:x}, GRANDMEAN);",
+      "  ${3:x_std} = STANDARDIZE(${2:x});"
+    ],
+    "description": "Mplus DEFINE block"
   },
   "Analysis Block": {
     "prefix": "analysis",
     "body": [
       "ANALYSIS:",
       "  TYPE = ${1:GENERAL};",
-      "  ESTIMATOR = ${2:ML};",
-      "  ROTATION = ${3:GEOMIN};"
+      "  ESTIMATOR = ${2:ML};"
     ],
     "description": "Mplus ANALYSIS block"
+  },
+  "Analysis Mixture": {
+    "prefix": "analysis.mixture",
+    "body": [
+      "ANALYSIS:",
+      "  TYPE = MIXTURE;",
+      "  STARTS = ${1:500} ${2:100};"
+    ],
+    "description": "Mplus ANALYSIS block for mixture models"
+  },
+  "Analysis Twolevel": {
+    "prefix": "analysis.twolevel",
+    "body": [
+      "ANALYSIS:",
+      "  TYPE = TWOLEVEL ${1:RANDOM};",
+      "  ESTIMATOR = ${2:MLR};"
+    ],
+    "description": "Mplus ANALYSIS block for twolevel models"
+  },
+  "Analysis EFA": {
+    "prefix": "analysis.efa",
+    "body": [
+      "ANALYSIS:",
+      "  TYPE = EFA ${1:2} ${2:4};",
+      "  ROTATION = ${3:GEOMIN};"
+    ],
+    "description": "Mplus ANALYSIS block for EFA"
+  },
+  "Analysis Bayesian": {
+    "prefix": "analysis.bayes",
+    "body": [
+      "ANALYSIS:",
+      "  ESTIMATOR = BAYES;",
+      "  PROCESSORS = ${1:2};",
+      "  FBITERATIONS = ${2:10000};"
+    ],
+    "description": "Mplus ANALYSIS block for Bayesian estimation"
   },
   "Model Block": {
     "prefix": "model",
     "body": [
       "MODEL:",
-      "  ${1:f1} BY ${2:y1-y5};",
-      "  ${3:f2} BY ${4:y6-y10};",
-      "  ${1:f1} WITH ${3:f2};"
+      "  ${1:f1} BY ${2:y1-y5};"
     ],
     "description": "Mplus MODEL block"
   },
@@ -51,11 +150,9 @@
     "prefix": "output",
     "body": [
       "OUTPUT:",
-      "  SAMPSTAT",
-      "  STANDARDIZED",
+      "  STDYX",
       "  TECH1",
-      "  TECH4",
-      "  MODINDICES(3.84)"
+      "  TECH8;"
     ],
     "description": "Mplus OUTPUT block"
   },
@@ -63,9 +160,8 @@
     "prefix": "savedata",
     "body": [
       "SAVEDATA:",
-      "  FILE = ${1:results.dat};",
-      "  SAVE = FSCORES;",
-      "  FORMAT = FREE;"
+      "  FILE IS ${1:results.dat};",
+      "  SAVE = ${2:FSCORES};"
     ],
     "description": "Mplus SAVEDATA block"
   },
@@ -73,104 +169,129 @@
     "prefix": "montecarlo",
     "body": [
       "MONTECARLO:",
-      "  NAMES = ${1:y1-y10};",
+      "  NAMES ARE ${1:y1-y5};",
       "  NOBSERVATIONS = ${2:500};",
       "  NREPS = ${3:1000};",
-      "  SEED = ${4:12345};"
+      "  SEED = ${4:53487};"
     ],
     "description": "Mplus MONTECARLO block"
   },
   "Factor Loading": {
     "prefix": "by",
     "body": [
-      "${1:factor} BY ${2:item1-item5};"
+      "${1:factor} BY ${2:y1-y5};"
     ],
-    "description": "Factor loading specification"
+    "description": "Factor loading specification (BY)"
   },
   "Regression": {
     "prefix": "on",
     "body": [
       "${1:y} ON ${2:x};"
     ],
-    "description": "Regression specification"
+    "description": "Regression specification (ON)"
   },
   "Covariance": {
     "prefix": "with",
     "body": [
       "${1:x1} WITH ${2:x2};"
     ],
-    "description": "Covariance specification"
+    "description": "Covariance specification (WITH)"
   },
-  "Mean": {
+  "Mean Intercept": {
     "prefix": "mean",
     "body": [
       "[${1:x}];"
     ],
-    "description": "Mean specification"
+    "description": "Mean/intercept specification"
   },
   "Variance": {
-    "prefix": "var",
+    "prefix": "variance",
     "body": [
       "${1:x};"
     ],
     "description": "Variance specification"
   },
+  "Fix Parameter": {
+    "prefix": "fix",
+    "body": [
+      "${1:f} BY ${2:y1}@${3:1};"
+    ],
+    "description": "Fix parameter to value (@)"
+  },
+  "Free Parameter": {
+    "prefix": "free",
+    "body": [
+      "${1:f} BY ${2:y1}*;"
+    ],
+    "description": "Free parameter (*)"
+  },
+  "Starting Value": {
+    "prefix": "start",
+    "body": [
+      "${1:f} BY ${2:y1}*${3:0.8};"
+    ],
+    "description": "Starting value for parameter"
+  },
+  "Equality Constraint": {
+    "prefix": "equal",
+    "body": [
+      "${1:f} BY ${2:y1-y5} (${3:1});"
+    ],
+    "description": "Equality constraint"
+  },
   "Model Constraint": {
     "prefix": "model.constraint",
     "body": [
       "MODEL CONSTRAINT:",
-      "  ${1:new(p1) = p2 + p3};"
+      "  NEW(${1:indirect});",
+      "  ${1:indirect} = ${2:b1}*${3:b2};"
     ],
-    "description": "Model constraint specification"
+    "description": "Model constraint with NEW parameter"
   },
   "Model Test": {
     "prefix": "model.test",
     "body": [
       "MODEL TEST:",
-      "  ${1:p1 = p2};"
+      "  ${1:p1} = ${2:p2};"
     ],
-    "description": "Model test specification"
+    "description": "Model test (Wald test)"
   },
   "Model Indirect": {
     "prefix": "model.indirect",
     "body": [
       "MODEL INDIRECT:",
-      "  ${1:y} IND ${2:x};"
+      "  ${1:y} IND ${2:m} ${3:x};"
     ],
-    "description": "Model indirect effect specification"
+    "description": "Model indirect effect"
   },
-  "Twolevel Model": {
-    "prefix": "twolevel",
+  "Model Priors": {
+    "prefix": "model.priors",
     "body": [
-      "ANALYSIS:",
-      "  TYPE = TWOLEVEL;",
-      "",
-      "MODEL:",
-      "  %WITHIN%",
-      "    ${1:y} ON ${2:x};",
-      "  %BETWEEN%",
-      "    ${1:y};"
+      "MODEL PRIORS:",
+      "  ${1:f} BY ${2:y1-y5} ~ N(${3:0.7}, ${4:0.1});"
     ],
-    "description": "Twolevel model specification"
+    "description": "Bayesian priors"
   },
-  "Mixture Model": {
-    "prefix": "mixture",
+  "CFA Model": {
+    "prefix": "cfa",
     "body": [
-      "VARIABLE:",
-      "  CLASSES = ${1:c}(2);",
-      "",
-      "ANALYSIS:",
-      "  TYPE = MIXTURE;",
-      "",
       "MODEL:",
-      "  %OVERALL%",
-      "    ${2:y} ON ${3:x};",
-      "  %c#1%",
-      "    [${2:y}];",
-      "  %c#2%",
-      "    [${2:y}];"
+      "  ${1:f1} BY ${2:y1-y4};",
+      "  ${3:f2} BY ${4:y5-y8};",
+      "  ${5:f3} BY ${6:y9-y12};",
+      "  ${1:f1}-${5:f3}@1;"
     ],
-    "description": "Mixture model specification"
+    "description": "CFA model specification"
+  },
+  "SEM Model": {
+    "prefix": "sem",
+    "body": [
+      "MODEL:",
+      "  ${1:f1} BY ${2:y1-y4};",
+      "  ${3:f2} BY ${4:y5-y8};",
+      "  ${3:f2} ON ${1:f1} ${5:x1};"
+    ],
+    "description": "SEM model specification"
   },
   "Growth Model": {
     "prefix": "growth",
@@ -180,25 +301,226 @@
     ],
     "description": "Growth model specification"
   },
-  "CFA Model": {
-    "prefix": "cfa",
+  "Twolevel Model": {
+    "prefix": "twolevel",
     "body": [
       "MODEL:",
-      "  ${1:f1} BY ${2:y1-y5};",
-      "  ${3:f2} BY ${4:y6-y10};",
-      "  ${5:f3} BY ${6:y11-y15};",
-      "  ${1:f1} WITH ${3:f2} ${5:f3};",
-      "  ${3:f2} WITH ${5:f3};"
+      "  %WITHIN%",
+      "    ${1:y} ON ${2:x};",
+      "  %BETWEEN%",
+      "    ${1:y} ON ${3:w};"
     ],
-    "description": "CFA model specification"
+    "description": "Twolevel model specification"
   },
-  "SEM Model": {
-    "prefix": "sem",
+  "Twolevel Random Slope": {
+    "prefix": "twolevel.slope",
     "body": [
       "MODEL:",
-      "  ${1:y} ON ${2:x1} ${3:x2} ${4:x3};",
-      "  ${5:y2} ON ${6:y};"
+      "  %WITHIN%",
+      "    ${1:s} | ${2:y} ON ${3:x};",
+      "  %BETWEEN%",
+      "    ${2:y} ${1:s} ON ${4:w};",
+      "    ${2:y} WITH ${1:s};"
     ],
-    "description": "SEM model specification"
+    "description": "Twolevel random slope model"
+  },
+  "Mixture Model": {
+    "prefix": "mixture",
+    "body": [
+      "MODEL:",
+      "  %OVERALL%",
+      "    ${1:f} BY ${2:y1-y5};",
+      "  %c#1%",
+      "    [${1:f}@0];",
+      "    ${1:f}@1;",
+      "  %c#2%",
+      "    [${1:f}];",
+      "    ${1:f};"
+    ],
+    "description": "Mixture model specification"
+  },
+  "LCA Model": {
+    "prefix": "lca",
+    "body": [
+      "VARIABLE:",
+      "  NAMES ARE ${1:u1-u10};",
+      "  CATEGORICAL ARE ${1:u1-u10};",
+      "  CLASSES = ${2:c} (${3:3});",
+      "",
+      "ANALYSIS:",
+      "  TYPE = MIXTURE;",
+      "  STARTS = 500 100;",
+      "",
+      "MODEL:",
+      "  %OVERALL%",
+      "  %c#1%",
+      "    [${1:u1}\$1-${1:u10}\$1];"
+    ],
+    "description": "Latent Class Analysis"
+  },
+  "GMM Model": {
+    "prefix": "gmm",
+    "body": [
+      "VARIABLE:",
+      "  NAMES ARE ${1:y1-y5};",
+      "  CLASSES = ${2:c} (${3:3});",
+      "",
+      "ANALYSIS:",
+      "  TYPE = MIXTURE;",
+      "  STARTS = 400 100;",
+      "",
+      "MODEL:",
+      "  %OVERALL%",
+      "    ${4:i} ${5:s} | ${1:y1}@0 ${1:y2}@1 ${1:y3}@2 ${1:y4}@3 ${1:y5}@4;",
+      "  %c#1%",
+      "    [${4:i} ${5:s}];",
+      "    ${4:i} (1);",
+      "    ${5:s} (2);"
+    ],
+    "description": "Growth Mixture Model"
+  },
+  "Mediation Model": {
+    "prefix": "mediation",
+    "body": [
+      "MODEL:",
+      "  ${1:y} ON ${2:m} ${3:x};",
+      "  ${2:m} ON ${3:x};",
+      "",
+      "MODEL INDIRECT:",
+      "  ${1:y} IND ${2:m} ${3:x};"
+    ],
+    "description": "Mediation analysis"
+  },
+  "Multiple Group": {
+    "prefix": "multigroup",
+    "body": [
+      "VARIABLE:",
+      "  GROUPING IS ${1:group} (${2:1}=male ${3:2}=female);",
+      "",
+      "MODEL:",
+      "  ${4:f1} BY ${5:y1-y5};",
+      "",
+      "MODEL ${2:male}:",
+      "  ${4:f1} BY ${5:y1-y5};",
+      "",
+      "MODEL ${3:female}:",
+      "  ${4:f1} BY ${5:y1-y5} (1-5);"
+    ],
+    "description": "Multiple group analysis"
+  },
+  "Survival Analysis": {
+    "prefix": "survival",
+    "body": [
+      "VARIABLE:",
+      "  SURVIVAL ARE ${1:t} (ALL);",
+      "",
+      "MODEL:",
+      "  ${1:t} ON ${2:x};"
+    ],
+    "description": "Survival analysis"
+  },
+  "Bayesian CFA": {
+    "prefix": "bayes.cfa",
+    "body": [
+      "ANALYSIS:",
+      "  ESTIMATOR = BAYES;",
+      "  PROCESSORS = 2;",
+      "",
+      "MODEL:",
+      "  ${1:f1} BY ${2:y1-y4}*;",
+      "  ${3:f2} BY ${4:y5-y8}*;",
+      "  ${1:f1}-${3:f2}@1;",
+      "",
+      "MODEL PRIORS:",
+      "  ${1:f1} BY ${2:y1-y4} ~ N(0.7, 0.1);",
+      "  ${3:f2} BY ${4:y5-y8} ~ N(0.7, 0.1);",
+      "",
+      "OUTPUT: STDYX TECH8;",
+      "PLOT: TYPE = PLOT2;"
+    ],
+    "description": "Bayesian CFA"
+  },
+  "ESEM Model": {
+    "prefix": "esem",
+    "body": [
+      "ANALYSIS:",
+      "  TYPE = EFA ${1:2} ${2:4};",
+      "  ROTATION = ${3:TARGET} (${4:OBLIQUE});",
+      "",
+      "MODEL:",
+      "  ${5:f1}-${6:f4} BY ${7:y1-y16} (*1);"
+    ],
+    "description": "ESEM (Exploratory SEM)"
+  },
+  "Priors Normal": {
+    "prefix": "prior.normal",
+    "body": [
+      "${1:f} BY ${2:y1-y5} ~ N(${3:0.7}, ${4:0.1});"
+    ],
+    "description": "Normal prior distribution"
+  },
+  "Priors Inverse Gamma": {
+    "prefix": "prior.ig",
+    "body": [
+      "${1:f} ~ IG(${2:0.01}, ${3:0.01});"
+    ],
+    "description": "Inverse Gamma prior distribution"
+  },
+  "Loop Plot": {
+    "prefix": "loop",
+    "body": [
+      "MODEL:",
+      "  ${1:y} ON ${2:x} (${3:b});",
+      "",
+      "MODEL CONSTRAINT:",
+      "  PLOT(${4:effect}) ${5:xval}*${6:xval};",
+      "  LOOP(${7:x}, ${8:-2}, ${9:2}, ${10:0.1});",
+      "  ${4:effect} = ${3:b}*${7:x};"
+    ],
+    "description": "Loop plot for moderation"
+  },
+  "Monte Carlo Population": {
+    "prefix": "mc.population",
+    "body": [
+      "MONTECARLO:",
+      "  NAMES ARE ${1:y1-y5} ${2:x};",
+      "  NOBSERVATIONS = ${3:500};",
+      "  NREPS = ${4:1000};",
+      "  SEED = ${5:53487};",
+      "",
+      "MODEL POPULATION:",
+      "  ${6:f} BY ${1:y1-y5}*0.8;",
+      "  ${6:f}@1;",
+      "  ${1:y1-y5}*0.36;",
+      "  ${6:f} ON ${2:x}*0.5;",
+      "",
+      "MODEL:",
+      "  ${6:f} BY ${1:y1-y5}*0.8;",
+      "  ${6:f} ON ${2:x}*0.5;"
+    ],
+    "description": "Monte Carlo simulation with population model"
+  },
+  "DSEM": {
+    "prefix": "dsem",
+    "body": [
+      "VARIABLE:",
+      "  NAMES ARE ${1:id} ${2:time} ${3:y} ${4:x};",
+      "  USEVARIABLES ARE ${3:y} ${4:x};",
+      "  LAGGED = ${3:y}(1) ${4:x}(1);",
+      "  CLUSTER IS ${1:id};",
+      "",
+      "ANALYSIS:",
+      "  TYPE = TWOLEVEL RANDOM;",
+      "  ESTIMATOR = BAYES;",
+      "  PROCESSORS = 2;",
+      "",
+      "MODEL:",
+      "  %WITHIN%",
+      "    ${5:s} | ${3:y} ON ${3:y}&1;",
+      "    ${3:y} ON ${4:x};",
+      "  %BETWEEN%",
+      "    ${3:y} ${5:s} ON ${4:x};"
+    ],
+    "description": "Dynamic SEM (DSEM)"
   }
 }
