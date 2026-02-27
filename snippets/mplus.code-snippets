@@ -25,6 +25,18 @@
     ],
     "description": "Mplus DATA IMPUTATION block"
   },
+  "Data Imputation with Bayes": {
+    "prefix": "data.imputation.bayes",
+    "body": [
+      "DATA IMPUTATION:",
+      "  IMPUTE = ${1:u1} (c) ${2:u2} (ct) ${3:u3} (n);",
+      "  NDATASETS = ${4:20};",
+      "  NAMES = ${5:y1-y5 x1-x3};",
+      "  SAVE = ${6:imputed_data*.dat};",
+      "  SAVE = CPROBABILITIES;"
+    ],
+    "description": "Mplus DATA IMPUTATION with Bayes for categorical, count, and nominal variables"
+  },
   "Variable Block": {
     "prefix": "variable",
     "body": [
@@ -53,6 +65,33 @@
     ],
     "description": "Mplus VARIABLE block with categorical variables"
   },
+  "Variable Count": {
+    "prefix": "variable.count",
+    "body": [
+      "VARIABLE:",
+      "  NAMES ARE ${1:u1-u10};",
+      "  COUNT ARE ${2:u1-u10};"
+    ],
+    "description": "Mplus VARIABLE block with count variables (Poisson)"
+  },
+  "Variable Count Negative Binomial": {
+    "prefix": "variable.count.nb",
+    "body": [
+      "VARIABLE:",
+      "  NAMES ARE ${1:u1-u10};",
+      "  COUNT ARE ${2:u1-u10 (nb)};"
+    ],
+    "description": "Mplus VARIABLE block with negative binomial count variables"
+  },
+  "Variable Nominal": {
+    "prefix": "variable.nominal",
+    "body": [
+      "VARIABLE:",
+      "  NAMES ARE ${1:u1-u10};",
+      "  NOMINAL ARE ${2:u1-u10};"
+    ],
+    "description": "Mplus VARIABLE block with nominal variables"
+  },
   "Variable Mixture": {
     "prefix": "variable.mixture",
     "body": [
@@ -61,6 +100,17 @@
       "  CLASSES = ${2:c} (${3:3});"
     ],
     "description": "Mplus VARIABLE block for mixture models"
+  },
+  "Variable Mixture with Auxiliary": {
+    "prefix": "variable.auxiliary",
+    "body": [
+      "VARIABLE:",
+      "  NAMES ARE ${1:y1-y5 x1-x3};",
+      "  USEVARIABLES ARE ${2:y1-y5};",
+      "  CLASSES = ${3:c} (${4:3});",
+      "  AUXILIARY = ${5:x1-x3} (R3STEP);"
+    ],
+    "description": "Mplus VARIABLE block for mixture models with auxiliary variables"
   },
   "Variable Multilevel": {
     "prefix": "variable.multilevel",
@@ -73,6 +123,26 @@
     ],
     "description": "Mplus VARIABLE block for multilevel models"
   },
+  "Variable Threelevel": {
+    "prefix": "variable.threelevel",
+    "body": [
+      "VARIABLE:",
+      "  NAMES ARE ${1:y x level2 level3};",
+      "  USEVARIABLES ARE ${2:y x};",
+      "  CLUSTER IS ${3:level3 level2};"
+    ],
+    "description": "Mplus VARIABLE block for three-level models"
+  },
+  "Variable Crossclassified": {
+    "prefix": "variable.crossclassified",
+    "body": [
+      "VARIABLE:",
+      "  NAMES ARE ${1:y x student school item};",
+      "  USEVARIABLES ARE ${2:y x};",
+      "  CLUSTER IS ${3:school item};"
+    ],
+    "description": "Mplus VARIABLE block for cross-classified models"
+  },
   "Variable Survival": {
     "prefix": "variable.survival",
     "body": [
@@ -83,6 +153,30 @@
     ],
     "description": "Mplus VARIABLE block for survival analysis"
   },
+  "Variable DSEM": {
+    "prefix": "variable.dsem",
+    "body": [
+      "VARIABLE:",
+      "  NAMES ARE ${1:id time y x};",
+      "  USEVARIABLES ARE ${2:y x};",
+      "  CLUSTER IS ${3:id};",
+      "  LAGGED = ${4:y(1) x(1)};",
+      "  TINTERVAL = ${5:time (1 timeint)};"
+    ],
+    "description": "Mplus VARIABLE block for DSEM/RDSEM models"
+  },
+  "Variable CT-RDSEM": {
+    "prefix": "variable.ctrdsem",
+    "body": [
+      "VARIABLE:",
+      "  NAMES ARE ${1:id minutes y x};",
+      "  USEVARIABLES ARE ${2:y x};",
+      "  CLUSTER IS ${3:id};",
+      "  LAGGED = ${4:y(1)};",
+      "  CTIME = ${5:minutes};"
+    ],
+    "description": "Mplus VARIABLE block for Continuous-Time RDSEM"
+  },
   "Define Block": {
     "prefix": "define",
     "body": [
@@ -91,6 +185,15 @@
       "  ${3:x_std} = STANDARDIZE(${2:x});"
     ],
     "description": "Mplus DEFINE block"
+  },
+  "Define Cluster Mean": {
+    "prefix": "define.cluster",
+    "body": [
+      "DEFINE:",
+      "  ${1:x_cm} = CLUSTER_MEAN(${2:x});",
+      "  ${3:x_cen} = CENTER(${2:x}, GROUPMEAN);"
+    ],
+    "description": "Mplus DEFINE block with cluster mean"
   },
   "Analysis Block": {
     "prefix": "analysis",
@@ -119,6 +222,24 @@
     ],
     "description": "Mplus ANALYSIS block for twolevel models"
   },
+  "Analysis Threelevel": {
+    "prefix": "analysis.threelevel",
+    "body": [
+      "ANALYSIS:",
+      "  TYPE = THREELEVEL ${1:RANDOM};",
+      "  ESTIMATOR = ${2:MLR};"
+    ],
+    "description": "Mplus ANALYSIS block for three-level models"
+  },
+  "Analysis Crossclassified": {
+    "prefix": "analysis.crossclassified",
+    "body": [
+      "ANALYSIS:",
+      "  TYPE = CROSSCLASSIFIED ${1:RANDOM};",
+      "  ESTIMATOR = ${2:MLR};"
+    ],
+    "description": "Mplus ANALYSIS block for cross-classified models"
+  },
   "Analysis EFA": {
     "prefix": "analysis.efa",
     "body": [
@@ -138,6 +259,37 @@
     ],
     "description": "Mplus ANALYSIS block for Bayesian estimation"
   },
+  "Analysis DSEM": {
+    "prefix": "analysis.dsem",
+    "body": [
+      "ANALYSIS:",
+      "  TYPE = TWOLEVEL RANDOM;",
+      "  ESTIMATOR = BAYES;",
+      "  PROCESSORS = ${1:2};",
+      "  BITERATIONS = ${2:(5000)};"
+    ],
+    "description": "Mplus ANALYSIS block for DSEM"
+  },
+  "Analysis PSEM": {
+    "prefix": "analysis.psem",
+    "body": [
+      "ANALYSIS:",
+      "  TYPE = ${1:RANDOM};",
+      "  ESTIMATOR = ${2:MLR};",
+      "  PENALTY = ${3:ALF};"
+    ],
+    "description": "Mplus ANALYSIS block for Penalized SEM"
+  },
+  "Analysis Measurement Invariance": {
+    "prefix": "analysis.invariance",
+    "body": [
+      "ANALYSIS:",
+      "  TYPE = ${1:MIXTURE};",
+      "  MODEL = CONFIGURAL METRIC SCALAR;",
+      "  ALIGNMENT = ${2:FREE};"
+    ],
+    "description": "Mplus ANALYSIS block for measurement invariance testing"
+  },
   "Model Block": {
     "prefix": "model",
     "body": [
@@ -156,6 +308,17 @@
     ],
     "description": "Mplus OUTPUT block"
   },
+  "Output with SVALUES": {
+    "prefix": "output.svalues",
+    "body": [
+      "OUTPUT:",
+      "  STDYX",
+      "  SVALUES",
+      "  TECH1",
+      "  TECH8;"
+    ],
+    "description": "Mplus OUTPUT block with SVALUES for class reordering"
+  },
   "Savedata Block": {
     "prefix": "savedata",
     "body": [
@@ -164,6 +327,22 @@
       "  SAVE = ${2:FSCORES};"
     ],
     "description": "Mplus SAVEDATA block"
+  },
+  "Savedata H5": {
+    "prefix": "savedata.h5",
+    "body": [
+      "SAVEDATA:",
+      "  H5RESULTS = ${1:results.h5};"
+    ],
+    "description": "Mplus SAVEDATA block with H5 output"
+  },
+  "Savedata Nested": {
+    "prefix": "savedata.nested",
+    "body": [
+      "SAVEDATA:",
+      "  NESTED IS ${1:nested.dat};"
+    ],
+    "description": "Mplus SAVEDATA block for nested model testing"
   },
   "Montecarlo Block": {
     "prefix": "montecarlo",
@@ -175,6 +354,36 @@
       "  SEED = ${4:53487};"
     ],
     "description": "Mplus MONTECARLO block"
+  },
+  "Montecarlo with Generate": {
+    "prefix": "montecarlo.generate",
+    "body": [
+      "MONTECARLO:",
+      "  NAMES ARE ${1:y1-y5 x};",
+      "  NOBSERVATIONS = ${2:500};",
+      "  NREPS = ${3:1000};",
+      "  SEED = ${4:53487};",
+      "  GENERATE = ${5:u1-u2 (p) u3 (nb) u4 (n 2) u5 (1 l)};",
+      "  CONVERGENCE = ${6:BASIC};"
+    ],
+    "description": "Mplus MONTECARLO block with GENERATE option"
+  },
+  "Plot Block": {
+    "prefix": "plot",
+    "body": [
+      "PLOT:",
+      "  TYPE = PLOT1 ${1:PLOT2 PLOT3};"
+    ],
+    "description": "Mplus PLOT block"
+  },
+  "Plot DRIFT for CT-RDSEM": {
+    "prefix": "plot.drift",
+    "body": [
+      "PLOT:",
+      "  TYPE = PLOT2;",
+      "  DRIFT = ${1:(0.2 3 0.1)};"
+    ],
+    "description": "Mplus PLOT block with DRIFT for CT-RDSEM"
   },
   "Factor Loading": {
     "prefix": "by",
@@ -272,6 +481,14 @@
     ],
     "description": "Bayesian priors"
   },
+  "Model Priors PSEM": {
+    "prefix": "model.priors.psem",
+    "body": [
+      "MODEL PRIORS:",
+      "  ${1:l1-l20} ~ GEOMIN(${2:4}, ${3:1});"
+    ],
+    "description": "PSEM GEOMIN prior"
+  },
   "CFA Model": {
     "prefix": "cfa",
     "body": [
@@ -324,6 +541,19 @@
     ],
     "description": "Twolevel random slope model"
   },
+  "Threelevel Model": {
+    "prefix": "threelevel",
+    "body": [
+      "MODEL:",
+      "  %WITHIN%",
+      "    ${1:y} ON ${2:x};",
+      "  %BETWEEN LEVEL2%",
+      "    ${1:y} ON ${3:w2};",
+      "  %BETWEEN LEVEL3%",
+      "    ${1:y} ON ${4:w3};"
+    ],
+    "description": "Three-level model specification"
+  },
   "Mixture Model": {
     "prefix": "mixture",
     "body": [
@@ -354,7 +584,7 @@
       "MODEL:",
       "  %OVERALL%",
       "  %c#1%",
-      "    [${1:u1}\$1-${1:u10}\$1];"
+      "    [${1:u1}$1-${1:u10}$1];"
     ],
     "description": "Latent Class Analysis"
   },
@@ -500,7 +730,7 @@
     ],
     "description": "Monte Carlo simulation with population model"
   },
-  "DSEM": {
+  "DSEM Model": {
     "prefix": "dsem",
     "body": [
       "VARIABLE:",
@@ -522,5 +752,170 @@
       "    ${3:y} ${5:s} ON ${4:x};"
     ],
     "description": "Dynamic SEM (DSEM)"
+  },
+  "RDSEM Model": {
+    "prefix": "rdsem",
+    "body": [
+      "VARIABLE:",
+      "  NAMES ARE ${1:id} ${2:time} ${3:y} ${4:x};",
+      "  USEVARIABLES ARE ${3:y} ${4:x};",
+      "  LAGGED = ${3:y}(1);",
+      "  CLUSTER IS ${1:id};",
+      "",
+      "DEFINE:",
+      "  CENTER ${4:x} (GROUPMEAN);",
+      "",
+      "ANALYSIS:",
+      "  TYPE = TWOLEVEL RANDOM;",
+      "  ESTIMATOR = BAYES;",
+      "  PROCESSORS = 2;",
+      "  BITERATIONS = (2000);",
+      "",
+      "MODEL:",
+      "  %WITHIN%",
+      "    ${5:s} | ${3:y}^ ON ${3:y}^1;",
+      "    ${6:sx} | ${3:y} ON ${4:x};",
+      "    ${7:logv} | ${3:y};",
+      "  %BETWEEN%",
+      "    ${3:y} ${5:s} ${6:sx} ${7:logv} ON ${8:w};",
+      "    ${3:y} ${5:s} ${6:sx} ${7:logv} WITH ${3:y} ${5:s} ${6:sx} ${7:logv};"
+    ],
+    "description": "Residual Dynamic SEM (RDSEM)"
+  },
+  "CT-RDSEM Model": {
+    "prefix": "ctrdsem",
+    "body": [
+      "VARIABLE:",
+      "  NAMES ARE ${1:id} ${2:minutes} ${3:y} ${4:x};",
+      "  USEVARIABLES ARE ${3:y} ${4:x};",
+      "  LAGGED = ${3:y}(1);",
+      "  CLUSTER IS ${1:id};",
+      "  CTIME = ${2:minutes};",
+      "",
+      "ANALYSIS:",
+      "  TYPE = TWOLEVEL RANDOM;",
+      "  ESTIMATOR = BAYES;",
+      "  PROCESSORS = 2;",
+      "  BITERATIONS = (5000);",
+      "",
+      "MODEL:",
+      "  %WITHIN%",
+      "    ${5:s} | ${3:y}^ ON ${3:y}^1;",
+      "    ${3:y} ON ${4:x};",
+      "  %BETWEEN%",
+      "    ${3:y} ${5:s} ON ${6:w};",
+      "",
+      "PLOT:",
+      "  TYPE = PLOT2;",
+      "  DRIFT = (0.2 3 0.1);"
+    ],
+    "description": "Continuous-Time Residual Dynamic SEM (CT-RDSEM)"
+  },
+  "PSEM Model": {
+    "prefix": "psem",
+    "body": [
+      "ANALYSIS:",
+      "  TYPE = ${1:RANDOM};",
+      "  ESTIMATOR = ${2:MLR};",
+      "  PENALTY = ${3:ALF};",
+      "",
+      "MODEL:",
+      "  ${4:f1-f4} BY ${5:y1-y16} (${6:l1-l16});",
+      "",
+      "MODEL PRIORS:",
+      "  ${6:l1-l16} ~ GEOMIN(${7:4}, ${8:1});"
+    ],
+    "description": "Penalized Structural Equation Modeling (PSEM)"
+  },
+  "Random Correlation": {
+    "prefix": "random.corr",
+    "body": [
+      "${1:c} | ${2:y1} WITH ${3:y2};"
+    ],
+    "description": "Random correlation specification"
+  },
+  "Log Variance": {
+    "prefix": "logvar",
+    "body": [
+      "${1:logv} | ${2:y};"
+    ],
+    "description": "Log variance specification for within-level residual variance"
+  },
+  "Alignment Analysis": {
+    "prefix": "alignment",
+    "body": [
+      "VARIABLE:",
+      "  NAMES ARE ${1:y1-y5 country};",
+      "  USEVARIABLES ARE ${1:y1-y5};",
+      "  CLUSTER = ${2:country};",
+      "",
+      "ANALYSIS:",
+      "  TYPE = ${3:TWOLEVEL};",
+      "  ALIGNMENT = ${4:FREE (*)};",
+      "",
+      "MODEL:",
+      "  %WITHIN%",
+      "    ${5:f} BY ${1:y1-y5};",
+      "  %BETWEEN%",
+      "    ${5:f} BY ${1:y1-y5};"
+    ],
+    "description": "Alignment analysis for measurement invariance"
+  },
+  "ESEM with Target Rotation": {
+    "prefix": "esem.target",
+    "body": [
+      "ANALYSIS:",
+      "  TYPE = EFA ${1:2} ${2:4};",
+      "  ROTATION = TARGET (OBLIQUE);",
+      "",
+      "MODEL:",
+      "  ${3:f1}-${4:f4} BY ${5:y1-y16} (${6:l1-l16});",
+      "",
+      "MODEL PRIORS:",
+      "  ${6:l1-l16} ~ GEOMIN(${7:4}, ${8:1}, ${9:0.01});"
+    ],
+    "description": "ESEM with target rotation using GEOMIN prior"
+  },
+  "Model Population": {
+    "prefix": "model.population",
+    "body": [
+      "MODEL POPULATION:",
+      "  ${1:f} BY ${2:y1-y5}*${3:0.8};",
+      "  ${1:f}@${4:1};",
+      "  ${2:y1-y5}*${5:0.36};"
+    ],
+    "description": "Model population for Monte Carlo simulation"
+  },
+  "Model Coverage": {
+    "prefix": "model.coverage",
+    "body": [
+      "MODEL COVERAGE:",
+      "  ${1:f} BY ${2:y1-y5}*${3:0.8};",
+      "  ${1:f}@${4:1};",
+      "  ${2:y1-y5}*${5:0.36};"
+    ],
+    "description": "Model coverage for Monte Carlo simulation"
+  },
+  "Threshold Specification": {
+    "prefix": "threshold",
+    "body": [
+      "[${1:u1}$${2:1}];"
+    ],
+    "description": "Threshold specification for categorical variables"
+  },
+  "Nominal Category": {
+    "prefix": "nominal.cat",
+    "body": [
+      "${1:u1}#${2:1} ON ${3:x};"
+    ],
+    "description": "Nominal variable category specification"
+  },
+  "Monte Carlo Missing Pattern": {
+    "prefix": "mc.patmiss",
+    "body": [
+      "PATMISS = ${1:y1-y4} (${2:0 0 0.1 0.2});",
+      "PATPROBS = ${3:0.4 0.3 0.2 0.1};"
+    ],
+    "description": "Monte Carlo missing data pattern specification"
   }
 }
