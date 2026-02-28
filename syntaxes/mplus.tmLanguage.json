@@ -15,9 +15,18 @@
       "end": "\\*/"
     },
     {
+      "comment": "TITLE block content - must be before other section headers",
+      "name": "string.title.mplus",
+      "begin": "(?i)(TITLE)\\s*:",
+      "end": "(?i)(?=DATA|VARIABLE|DEFINE|ANALYSIS|MODEL|OUTPUT|PLOT|SAVEDATA|MONTECARLO|$)",
+      "captures": {
+        "1": {"name": "keyword.control.section.mplus"}
+      }
+    },
+    {
       "comment": "Section headers - main commands",
       "name": "keyword.control.section.mplus",
-      "match": "(?i)\\b(TITLE|DATA|VARIABLE|DEFINE|ANALYSIS|MODEL|OUTPUT|PLOT|SAVEDATA|MONTECARLO)\\s*:",
+      "match": "(?i)\\b(DATA|VARIABLE|DEFINE|ANALYSIS|MODEL|OUTPUT|PLOT|SAVEDATA|MONTECARLO)\\s*:",
       "captures": {
         "1": {"name": "keyword.control.mplus"}
       }
@@ -39,6 +48,16 @@
       "comment": "Level specifications %WITHIN% %BETWEEN%",
       "name": "entity.name.class.mplus",
       "match": "(?i)%(WITHIN|BETWEEN|BETWEEN\\s+\\w+|OVERALL)%"
+    },
+    {
+      "comment": "Class probability references (e.g., c#1, u#1)",
+      "name": "variable.language.class.mplus",
+      "match": "\\b[a-zA-Z_][a-zA-Z0-9_]*#\\d+\\b"
+    },
+    {
+      "comment": "Lagged variable references (e.g., y&1)",
+      "name": "variable.language.lagged.mplus",
+      "match": "\\b[a-zA-Z_][a-zA-Z0-9_]*&\\d+\\b"
     },
     {
       "comment": "DATA command keywords",
@@ -258,6 +277,86 @@
       "comment": "Colon separator",
       "name": "punctuation.separator.colon.mplus",
       "match": ":"
+    },
+    {
+      "comment": "Fit indices in output - Chi-Square tests",
+      "name": "support.constant.fit.mplus",
+      "match": "(?i)\\b(Chi-Square(?:\\s+Test(?:\\s+of\\s+Model\\s+Fit)?|\\s+Contribution)?|Degrees\\s+of\\s+Freedom|DF)\\b"
+    },
+    {
+      "comment": "Fit indices in output - Approximation error",
+      "name": "support.constant.fit.mplus",
+      "match": "(?i)\\b(RMSEA(?:\\s*\\(.*?\\))?|RMSEA_90%_CI|PCLOSE|Prob\\.\\s*RMSEA|90\\s+Percent\\s+Confidence\\s+Interval)\\b"
+    },
+    {
+      "comment": "Fit indices in output - Comparative fit indices",
+      "name": "support.constant.fit.mplus",
+      "match": "(?i)\\b(CFI|TLI|NNFI|NFI|RFI|IFI|Bentler-Bonett\\s+NNFI|Tucker-Lewis\\s+Index|Comparative\\s+Fit\\s+Index|Incremental\\s+Fit\\s+Index)\\b"
+    },
+    {
+      "comment": "Fit indices in output - Residual indices",
+      "name": "support.constant.fit.mplus",
+      "match": "(?i)\\b(SRMR|WRMR|Standardized\\s+Root\\s+Mean\\s+Square\\s+Residual|Weighted\\s+Root\\s+Mean\\s+Square\\s+Residual)\\b"
+    },
+    {
+      "comment": "Fit indices in output - Information criteria",
+      "name": "support.constant.fit.mplus",
+      "match": "(?i)\\b(AIC|BIC|aBIC|SSA-BIC|AICc|Akaike\\s+Information\\s+Criterion|Bayesian\\s+Information\\s+Criterion|Sample-Size\\s+Adjusted\\s+BIC)\\b"
+    },
+    {
+      "comment": "Fit indices in output - Likelihood values",
+      "name": "support.constant.fit.mplus",
+      "match": "(?i)\\b(Loglikelihood|LL|H0\\s+Value|H1\\s+Value|Information\\s+Criteria)\\b"
+    },
+    {
+      "comment": "Fit indices in output - Sample information",
+      "name": "support.constant.fit.mplus",
+      "match": "(?i)\\b(Number\\s+of\\s+Free\\s+Parameters|Number\\s+of\\s+Observations|Number\\s+of\\s+Groups|Sample\\s+Size)\\b"
+    },
+    {
+      "comment": "Fit indices in output - Mixture modeling",
+      "name": "support.constant.fit.mplus",
+      "match": "(?i)\\b(Entropy|LMR-LRT|ALMR-LRT|BLRT|VLMR-LRT|VLMRLRT|LMRLRT|Lo-Mendell-Rubin|Adjusted\\s+LMR|Bootstrapped\\s+LRT)\\b"
+    },
+    {
+      "comment": "Fit indices in output - Multilevel modeling",
+      "name": "support.constant.fit.mplus",
+      "match": "(?i)\\b(ICC|Intraclass\\s+Correlation|Deviance|ICC\\([^)]+\\))\\b"
+    },
+    {
+      "comment": "Output section headers - Model results",
+      "name": "keyword.control.output.mplus",
+      "match": "(?i)\\b(MODEL\\s+FIT\\s+INFORMATION|MODEL\\s+RESULTS|STANDARDIZED\\s+MODEL\\s+RESULTS|CONFIDENCE\\s+INTERVALS\\s+OF\\s+MODEL\\s+RESULTS|TECHNICAL\\s+OUTPUT)\\b"
+    },
+    {
+      "comment": "Output section headers - TECH outputs",
+      "name": "keyword.control.output.mplus",
+      "match": "(?i)\\b(TECH1|TECH2|TECH3|TECH4|TECH5|TECH6|TECH7|TECH8|TECH9|TECH10|TECH11|TECH12|TECH13|TECH14|TECH15|TECH16|TECH17)\\b"
+    },
+    {
+      "comment": "Output section headers - Additional results",
+      "name": "keyword.control.output.mplus",
+      "match": "(?i)\\b(SUMMARY\\s+OF\\s+ANALYSIS|SUMMARY\\s+OF\\s+DATA|SAMPLE\\s+STATISTICS|CORRELATION\\s+MATRIX|COVARIANCE\\s+MATRIX|UNIVARIATE\\s+STATISTICS|TESTS\\s+OF\\s+MODEL\\s+FIT|MODEL\\s+MODIFICATION\\s+INDICES|STANDARDIZED\\s+MODEL\\s+RESULTS|R-SQUARE|QUALITY\\s+OF\\s+NUMERICAL\\s+RESULTS)\\b"
+    },
+    {
+      "comment": "Warning messages in output",
+      "name": "invalid.deprecated.mplus",
+      "match": "(?i)\\*\\*\\*\\s*WARNING\\s*\\*\\*\\*|MODEL\\s+MAY\\s+NOT\\s+BE\\s+IDENTIFIED|NON-POSITIVE\\s+DEFINITE\\s+(?:FIRST-ORDER\\s+)?(?:MATRIX|MATRIX\\s+IN\\s+BASELINE\\s+MODEL|PRODUCT\\s+MATRIX\\s+OF\\s+DELTA|DERIVATIVE\\s+MATRIX)"
+    },
+    {
+      "comment": "Output column headers - Parameter estimates",
+      "name": "storage.type.output.mplus",
+      "match": "(?i)\\b(Estimate|Standard\\s+Error|S\\.E\\.|Est\\./S\\.E\\.|Two-Tailed\\s+P-Value|P-Value|Std\\.|StdYX|StdY|Estimate/S\\.E\\.)\\b"
+    },
+    {
+      "comment": "Output column headers - Confidence intervals",
+      "name": "storage.type.output.mplus",
+      "match": "(?i)\\b(95%\\s+Confidence\\s+Intervals|95%\\s+CI|Lower\\s+0\\.5%|Lower\\s+2\\.5%|Lower\\s+5%|Estimate|Upper\\s+5%|Upper\\s+2\\.5%|Upper\\s+0\\.5%)\\b"
+    },
+    {
+      "comment": "Output column headers - Model information",
+      "name": "storage.type.output.mplus",
+      "match": "(?i)\\b(Value|Scaling\\s+Correction\\s+Factor|Parameters|Missing\\s+Data\\s+Handling)\\b"
     }
   ]
 }

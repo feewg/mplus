@@ -581,12 +581,9 @@
       "  TYPE = MIXTURE;",
       "  STARTS = 500 100;",
       "",
-      "MODEL:",
-      "  %OVERALL%",
-      "  %c#1%",
-      "    [${1:u1}$1-${1:u10}$1];"
+      "OUTPUT: TECH1 TECH8 TECH10;"
     ],
-    "description": "Latent Class Analysis"
+    "description": "Latent Class Analysis with categorical indicators"
   },
   "GMM Model": {
     "prefix": "gmm",
@@ -607,7 +604,7 @@
       "    ${4:i} (1);",
       "    ${5:s} (2);"
     ],
-    "description": "Growth Mixture Model"
+    "description": "Growth Mixture Model with linear time scores"
   },
   "Mediation Model": {
     "prefix": "mediation",
@@ -642,12 +639,14 @@
     "prefix": "survival",
     "body": [
       "VARIABLE:",
-      "  SURVIVAL ARE ${1:t} (ALL);",
+      "  NAMES ARE ${1:t x tc};",
+      "  SURVIVAL ARE ${1:t};",
+      "  TIMECENSORED ARE ${2:tc} (0 = NOT 1 = RIGHT);",
       "",
       "MODEL:",
-      "  ${1:t} ON ${2:x};"
+      "  ${1:t} ON ${3:x};"
     ],
-    "description": "Survival analysis"
+    "description": "Survival analysis with right-censoring specification"
   },
   "Bayesian CFA": {
     "prefix": "bayes.cfa",
@@ -917,5 +916,95 @@
       "PATPROBS = ${3:0.4 0.3 0.2 0.1};"
     ],
     "description": "Monte Carlo missing data pattern specification"
+  },
+  "Variable Censored": {
+    "prefix": "variable.censored",
+    "body": [
+      "VARIABLE:",
+      "  NAMES ARE ${1:y1-y10};",
+      "  CENSORED ARE ${2:y1} (${3:b});"
+    ],
+    "description": "Mplus VARIABLE block with censored variables (b=bottom, t=top)"
+  },
+  "Variable Complex Survey": {
+    "prefix": "variable.complex",
+    "body": [
+      "VARIABLE:",
+      "  NAMES ARE ${1:y x w cluster};",
+      "  USEVARIABLES ARE ${2:y x w};",
+      "  CLUSTER IS ${3:cluster};",
+      "  WEIGHT IS ${4:w};"
+    ],
+    "description": "Mplus VARIABLE block for complex survey data with clustering and weights"
+  },
+  "Analysis Complex": {
+    "prefix": "analysis.complex",
+    "body": [
+      "ANALYSIS:",
+      "  TYPE = COMPLEX;",
+      "  ESTIMATOR = ${1:MLR};"
+    ],
+    "description": "Mplus ANALYSIS block for complex survey data"
+  },
+  "Data Correlation Matrix": {
+    "prefix": "data.correlation",
+    "body": [
+      "DATA:",
+      "  FILE IS ${1:data.dat};",
+      "  TYPE = CORRELATION;",
+      "  NOBSERVATIONS = ${2:1000};"
+    ],
+    "description": "Mplus DATA block for correlation matrix input"
+  },
+  "Data Covariance Matrix": {
+    "prefix": "data.covariance",
+    "body": [
+      "DATA:",
+      "  FILE IS ${1:data.dat};",
+      "  TYPE = COVARIANCE;",
+      "  NOBSERVATIONS = ${2:1000};"
+    ],
+    "description": "Mplus DATA block for covariance matrix input"
+  },
+  "Variable Auxiliary Missing": {
+    "prefix": "variable.auxmissing",
+    "body": [
+      "VARIABLE:",
+      "  NAMES ARE ${1:y1-y5 z};",
+      "  USEVARIABLES ARE ${2:y1-y5};",
+      "  AUXILIARY = (m) ${3:z};"
+    ],
+    "description": "Mplus VARIABLE block with missing data correlate (m=missing)"
+  },
+  "Analysis Mixture Twolevel": {
+    "prefix": "analysis.mixture.twolevel",
+    "body": [
+      "ANALYSIS:",
+      "  TYPE = TWOLEVEL MIXTURE;",
+      "  STARTS = ${1:0};",
+      "  INTEGRATION = ${2:15};"
+    ],
+    "description": "Mplus ANALYSIS block for two-level mixture models"
+  },
+  "Model Missing": {
+    "prefix": "model.missing",
+    "body": [
+      "MODEL MISSING:",
+      "  [${1:y1-y4}@${2:-1}];",
+      "  ${1:y1} ON ${3:x}*${4:0.4};"
+    ],
+    "description": "Model for generating missing data in Monte Carlo simulation"
+  },
+  "Montecarlo Cutpoints": {
+    "prefix": "mc.cutpoints",
+    "body": [
+      "MONTECARLO:",
+      "  NAMES ARE ${1:y1-y5 x};",
+      "  NOBSERVATIONS = ${2:500};",
+      "  NREPS = ${3:1000};",
+      "  SEED = ${4:53487};",
+      "  CUTPOINTS = ${5:x}(${6:1});"
+    ],
+    "description": "Monte Carlo with cutpoints for creating binary variables"
   }
 }
